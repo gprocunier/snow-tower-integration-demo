@@ -1,0 +1,20 @@
+- name: add users to AD
+  hosts: all
+  vars:
+    bundle:
+      groups: []
+      users: []
+  tasks:
+    - win_domain_group:
+        name: "{{ item.name }}"
+        scope: "{{ item.scope }}"
+        path: "{{ item.path }}"
+        state: "{{ item.state }}"
+      with_items: "{{ bundle.groups }}"
+    - win_domain_user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        state: "{{ item.state }}"
+        groups: "{{ item.groups }}"
+      with_items: "{{ bundle.users }}"
+
